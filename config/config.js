@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'dev') {
     urlBD = 'mongodb://localhost:27017/cafe'
 }
 else {
-    urlBD = 'mongodb+srv://tiktaktoe:35Kqmt7Q4OXDW6cK@cluster0-mh3ac.mongodb.net/cafe'
+    urlBD = process.env.URIDB
 }
 
 process.env.URLDB = urlBD
