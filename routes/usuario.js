@@ -2,9 +2,10 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const _ = require('underscore')
 const Usuario = require('../models/usuarioModel')
+const { verificarToken, verificarADMIN_ROLE } = require('../middleware/auth')
 const app = express()
 
-app.get('/usuario', function (req, res) {
+app.get('/usuario', verificarToken, function (req, res) {
 
     let desde = req.query.desde || 0
     desde = Number(desde)
@@ -35,7 +36,7 @@ app.get('/usuario', function (req, res) {
         })
 })
 
-app.post('/usuario', function (req, res) {
+app.post('/usuario', [verificarToken, verificarADMIN_ROLE], function (req, res) {
     let body = req.body
     let usuario = new Usuario({
         nombre: body.nombre,
@@ -61,7 +62,7 @@ app.post('/usuario', function (req, res) {
 
 })
 
-app.put('/usuario/:id', function (req, res) {
+app.put('/usuario/:id', [verificarToken, verificarADMIN_ROLE], function (req, res) {
     let id = req.params.id
     //los campos que puedo actualizar 
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
@@ -84,7 +85,7 @@ app.put('/usuario/:id', function (req, res) {
 
 })
 
-app.delete('/usuario/:id', function (req, res) {
+app.delete('/usuario/:id', [verificarToken, verificarADMIN_ROLE], function (req, res) {
     let id = req.params.id
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
     Usuario.findByIdAndRemove(id, (err, UsuarioBorrado) => {
