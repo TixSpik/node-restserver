@@ -59,6 +59,8 @@ app.put('/uploads/:tipo/:id', (req, res) => {
                 err
             });
 
+
+
         if (tipo === 'usuarios') {
             imagenUsuario(id, res, nombreArchivo)
         } else {
